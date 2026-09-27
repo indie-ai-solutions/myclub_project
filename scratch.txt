@@ -1,0 +1,33 @@
+from django.utils import timezone
+from datetime import datetime as dt
+tz = timezone.get_current_timezone()
+event1 = Event(
+    name="Test Event1",
+    event_date=dt(2026,11,1,18,0,tzinfo=tz),
+    venue=venue1,
+    manager="Bob"
+)
+
+
+venue1 = Venue(
+    name="South Stadium",
+    address="South St",
+    zip_code="123456",
+    phone="555-12345",
+    web="southstexample.com",
+    email_address="southst@example.com"
+)
+
+MyClubUser.objects.create(
+    first_name="Joe",
+    last_name="Smith",
+    email="joesmith@example.com"
+)
+
+event1.attendees.add(
+    MyClubUser.objects.create(
+            first_name="Jane",
+            last_name="Doe",
+            email="janedoe@example.com"
+    )
+)
