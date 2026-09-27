@@ -1,3 +1,15 @@
 .DS_Store
+
 __pycache__/
 *.py[cod]
+
+# SQLite databases
+*.db
+*.sqlite
+*.sqlite3
+
+# SQLite temporary journal and WAL files
+*.db-journal
+*.db-wal
+*.sqlite3-journal
+*.sqlite3-wal
