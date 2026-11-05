@@ -12,6 +12,7 @@ def index(request, year=date.today().year, month=date.today().month): # Add year
     #  t = date.today() # Assign today's date
     #  month = t.strftime('%b') # Format the month
     #  year = t.year # Assign the year
+    assert False # Trigger an assertion error
     year = int(year) # Convert year to integer
     month = int(month) # Convert month to integer
     if year < 2000 or year > 2099: year = date.today().year
