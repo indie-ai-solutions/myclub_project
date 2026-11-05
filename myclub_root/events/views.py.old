@@ -1,0 +1,139 @@
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.http import JsonResponse
+from django.template.response import TemplateResponse
+from django.core.paginator import Paginator
+
+from datetime import date
+import calendar # Import the calendar module
+from calendar import HTMLCalendar # Import the HTMLCalendar class
+
+from django.http import FileResponse
+import io
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+import csv # Import the csv module
+from .models import Event, Venue, MyClubUser  # Import the Event and Venue models
+from .forms import VenueForm  # Import the VenueForm class
+
+def index(request, year=date.today().year, month=date.today().month): # Add year and month default parameters
+    #  t = date.today() # Assign today's date
+    #  month = t.strftime('%b') # Format the month
+    #  year = t.year # Assign the year
+    # usr = request.user
+    # ses = request.session
+    # path = request.path
+    # path_info = request.path_info
+    # headers = request.headers
+    # assert False # Trigger an assertion error
+    year = int(year) # Convert year to integer
+    month = int(month) # Convert month to integer
+    if year < 2000 or year > 2099: year = date.today().year
+    month_name = calendar.month_name[month] # Get the full month name
+    # title = f'MyClub Event Calendar - {month} {year}'
+    title = f'MyClub Event Calendar - {month_name} {year}'
+    cal = HTMLCalendar().formatmonth(year, month) # Create an HTML calendar for the given month and year
+
+    # Hardcoded announcements for demonstration purposes
+    announcements = [
+            {
+                'date': '10-10-2026',
+                'announcement': "Club Registrations Open"
+            },
+            {
+                'date': '07-15-2026',
+                'announcement': "Joe Smith Elected New Club President"
+            }
+        ]
+    
+    # return HttpResponse(f"<h1>{title}</h1>")
+    # return HttpResponse(f"<h1>{title}</h1><p>{cal}</p>")
+    # return render(request, 
+    #     'events/calendar_base.html', 
+    #     {"title": title,"cal": cal, "announcements": announcements }
+    #     ) # Render the base.html template with the title and calendar
+
+    return TemplateResponse(request,
+        'events/calendar_base.html',
+        {'title': title, 'cal': cal, 'announcements': announcements}
+    )
+
+def all_events(request):
+    # event_list = Event.objects.all()
+    # Need to use this version after Chapter 9:
+    event_list = Event.events.all()
+    return render(request,
+        'events/event_list.html',
+        {'event_list': event_list}
+    )
+
+def add_venue(request):
+    submitted = False
+    if request.method == 'POST':
+        form = VenueForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/add_venue/?submitted=True')
+    else:
+        form = VenueForm()
+        if 'submitted' in request.GET:
+            submitted = True
+    return render(request, 
+        'events/add_venue.html', 
+        {'form': form, 'submitted': submitted}
+        )
+
+def gen_text(request):
+    response = HttpResponse(content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename="bart.txt"'
+    lines = [
+        "I will not expose the ignorance of the faculty.\n",
+        "I will not conduct my own fire drills.\n",
+        "I will not prescribe medication.\n",
+    ]
+    response.writelines(lines)
+    return response
+
+def gen_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="venues.csv"'
+    writer = csv.writer(response)
+    venues = Venue.venues.all()
+    writer.writerow(['Venue Name', 'Address', 'Phone', 'Email'])
+    for venue in venues:
+        writer.writerow([venue.name, venue.address, venue.phone, venue.email_address])    
+    return response
+
+def gen_json(request):
+    venues = list(Venue.venues.values('name', 'address', 'phone', 'email_address'))
+    return JsonResponse({'venues': venues})
+
+def gen_pdf(request):
+    buf = io.BytesIO()
+    c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
+    textob = c.beginText()
+    textob.setTextOrigin(inch, inch)
+    textob.setFont("Helvetica-Oblique", 14)
+    lines = [
+        "I will not expose the ignorance of the faculty.",
+        "I will not conduct my own fire drills.",
+        "I will not prescribe medication.",
+    ]
+    for line in lines:
+        textob.textLine(line)
+    c.drawText(textob)
+    c.showPage()
+    c.save()
+    buf.seek(0)
+    return FileResponse(buf, as_attachment=True, filename='bart.pdf')
+
+def list_subscribers(request):
+    p = Paginator(MyClubUser.objects.all().order_by('last_name'), 3)
+    page = request.GET.get('page')
+    subscribers = p.get_page(page)
+    return render(request,
+        'events/subscribers.html',
+        {'subscribers': subscribers}
+        )
