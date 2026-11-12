@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('tdemo/', views.template_demo, name='tdemo'), # Add a URL pattern for the template_demo view
     path('gentext/', views.gen_text, name='generate-text-file'),
     path('gencsv/', views.gen_csv, name='generate-csv-file'),
     path('genjson/', views.gen_json, name='generate-json'),

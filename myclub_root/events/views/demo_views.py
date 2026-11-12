@@ -2,6 +2,9 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.http import FileResponse
+from django.utils import timezone
+
+from datetime import datetime as dt
 import io
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
@@ -52,3 +55,38 @@ def gen_pdf(request):
     c.save()
     buf.seek(0)
     return FileResponse(buf, as_attachment=True, filename='bart.pdf')
+
+def template_demo(request):
+    tz = timezone.get_current_timezone()
+    empty_list = []
+    color_list = ['red', 'green', 'blue', 'yellow']
+    somevar = 5
+    anothervar = 21
+    today = timezone.now()
+    past = dt(1985, 11, 5, tzinfo=tz)
+    future = dt(2035, 11, 5, tzinfo=tz)
+    best_bands = [
+        {'name': 'The Angels', 'country': 'Australia'},
+        {'name': 'AC/DC', 'country': 'Australia'},
+        {'name': 'Nirvana', 'country': 'USA'},
+        {'name': 'The Offspring', 'country': 'USA'},
+        {'name': 'Iron Maiden', 'country': 'UK'},
+        {'name': 'Rammstein', 'country': 'Germany'},
+    ]
+    aussie_bands = ['Australia', ['The Angels', 'AC/DC', 'The Living End']]
+    venues = list(Venue.venues.values('name', 'address', 'zip_code'))
+    return render(request,
+        'events/template_demo.html',
+        {
+            'somevar': somevar,
+            'anothervar': anothervar,
+            'empty_list': empty_list,
+            'color_list': color_list,
+            'best_bands': best_bands,
+            'today': today,
+            'past': past,
+            'future': future,
+            'aussie_bands': aussie_bands,
+            'venues': venues,
+        }
+    )
