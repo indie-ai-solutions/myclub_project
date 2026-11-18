@@ -1,4 +1,4 @@
-{% load static humanize %}
+{% load static humanize event_custom_tags %}
 <!doctype html>
 <html>
     <meta charset="utf-8">
@@ -31,7 +31,7 @@
     {% endfor %}
 
     <p><strong>Cycle tag used to format a table:</strong></p>
-    <table border=0 style="width: 100px">
+    <table style="border: none; width: 100px">
       {% for i in '12345' %}
       <tr class="{% cycle 'row' 'altrow' %}">
         <td>{{ i }}</td>
@@ -40,7 +40,7 @@
     </table>
   
     <p><strong>Resetcycle tag:</strong></p>
-    <table border=0 style="width: 100px">
+    <table style="border: none; width: 100px">
       {% for i in '12345' %}
       <tr class="{% cycle 'row' 'altrow' %}">
         <td>{{ i }}</td>
@@ -65,7 +65,7 @@
     {% endfor %}
     </ul>
     <p><strong>The for loop variables:</strong></p>
-    <table border=1>
+    <table style="border: 1px solid #333;">
     <tr>
         <th>Item</th>
         <th>forloop.counter</th>
@@ -354,5 +354,13 @@
     {{ today|naturalday }}<br />
     {{ today|naturaltime }}; {{ past|naturaltime }}; {{ future|naturaltime }}<br />
     {{ 1|ordinal }}, {{ 2|ordinal }}, {{ 3|ordinal }}, {{ 20|ordinal }}
+
+    <h2>Custom Tags and Filters</h2>
+    {{ "James is in rehab again"|reverse }}<br />
+    {{ 100|reverse }}<br />
+    {% create_date today %}<br />
+    {% highlight color="lightgreen" %}This text is highlighted by a simple block tag.{% endhighlight %}<br />
+    {% highlight %}This text is highlighted in the default color.{% endhighlight %}
+    {% announcements %}
 </body>
 </html>

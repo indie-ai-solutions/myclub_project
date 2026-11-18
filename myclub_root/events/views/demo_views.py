@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.http import FileResponse
 from django.utils import timezone
+from django.template import RequestContext, Template
 
 from datetime import datetime as dt
 import io
@@ -90,3 +91,18 @@ def template_demo(request):
             'venues': venues,
         }
     )
+
+def my_processor(request):
+    return {
+        'foo': 'foo',
+        'bar': 'bar',
+        'baz': 'baz',
+    }
+
+
+def context_demo(request):
+    # template = Template('{{ user }}<br>{{ perms }}<br>{{ request }}<br>{{ messages }}')
+    # template = Template('{{ LANGUAGE_CODE }}<br>{{ LANGUAGE_BIDI }}')
+    template = Template('{{ foo }}<br>{{ bar }}<br>{{ baz }}')
+    con = RequestContext(request, processors=[my_processor])
+    return HttpResponse(template.render(con))
