@@ -281,10 +281,6 @@
     {{ best_bands|json_script:"best-bands" }}
     {{ venues|json_script:"all-venues" }}
  
-    <h2>Testing Length</h2>
-    {% if color_list|length == 4 %}color_list has 4 items{% endif %}<br />
-    {{ "Hello"|length }}
- 
     <h2>Make_list Filter</h2>
     {{ "Hello"|make_list }}<br />
     {{ "12345"|make_list }}<br />
@@ -336,6 +332,9 @@
     <h2>Encoding URLs</h2>
     {{ "https://bestbands.example.com/bands?album=Master of Puppets&rating=awesome"|urlencode }}
  
+    <h2>Wordcount Filter</h2>
+    {{ "The djangobook.com website is awesome!"|wordcount }}
+
     <h2>Wordwrap Filter</h2>
     <pre>{{ "Now I lay me down to sleep"|wordwrap:4 }}</pre>
  

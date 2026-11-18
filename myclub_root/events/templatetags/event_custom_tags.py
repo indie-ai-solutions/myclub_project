@@ -12,7 +12,7 @@ def reverse(value):
 
 @register.simple_tag
 def create_date(date_val):
-    return "This content was created on %s" % date_val.strftime('%A %B %d, %Y')
+    return f"This content was created on {date_val.strftime('%A %B %d, %Y')}"
 
 @register.simple_block_tag
 def highlight(content, color='yellow'):

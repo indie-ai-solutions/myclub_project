@@ -6,4 +6,22 @@
   <h1>{{ title }}</h1>
   <p>{% autoescape off %}{{ cal }}{% endautoescape %}</p>
   {% include "events/announcements.html" %} <!-- Include the announcements.html template -->
+  {% partialdef event-info %}
+    <div class="event-tile">
+        <div class="event-tile-date">{{ event.event_date|date:"M j" }}</div>
+        <div class="event-tile-details">
+            <h3>{{ event.name }}</h3>
+            <p>{{ event.event_date|date:"l, F j, Y, g:i A" }}</p>
+            <p>Venue: {{ event.venue|default:"To be confirmed" }}</p>
+            <p>Manager: {% firstof event.manager.get_full_name event.manager.username "To be confirmed" %}</p>
+        </div>
+    </div>
+    {% endpartialdef event-info %}
+
+    <h2>Upcoming Events</h2>
+    {% for event in upcoming_events %}
+        {% partial event-info %}
+    {% empty %}
+        <p>There are no upcoming events.</p>
+    {% endfor %}
 {% endblock content %}

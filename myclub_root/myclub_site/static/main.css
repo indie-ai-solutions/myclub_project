@@ -119,3 +119,31 @@ input {
 .required label:after {
     content: "*";
 }
+
+/* Upcoming event tiles */
+.event-tile {
+    display: flex;
+    border: 1px solid #270c39;
+    margin-bottom: 1em;
+}
+.event-tile-date {
+    width: 25%;
+    background-color: #270c39;
+    color: #ffffff;
+    font-size: 1.75em;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.event-tile-details {
+    width: 75%;
+    padding: 0.5em 1em;
+}
+.event-tile-details h3 {
+    color: #270c39;
+    margin: 0.25em 0;
+}
+.event-tile-details p {
+    margin: 0.25em 0;
+}

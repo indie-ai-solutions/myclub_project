@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.core.paginator import Paginator
+from django.utils import timezone
 
 from datetime import date
 import calendar # Import the calendar module
@@ -32,6 +33,12 @@ def index(request, year=date.today().year, month=date.today().month): # Add year
             }
         ]
     
+        # upcoming_events retrieves the next three events in the calendar
+    upcoming_events = (
+        Event.events.filter(event_date__gte=timezone.now())
+        .select_related('venue', 'manager')
+        .order_by('event_date')[:3]
+    )
     # return render(request, 
     #     'events/calendar_base.html', 
     #     {"title": title,"cal": cal, "announcements": announcements }
@@ -39,7 +46,12 @@ def index(request, year=date.today().year, month=date.today().month): # Add year
 
     return TemplateResponse(request,
         'events/calendar_base.html',
-        {'title': title, 'cal': cal, 'announcements': announcements}
+        {
+            'title': title, 
+            'cal': cal, 
+            'announcements': announcements, 
+            'upcoming_events': upcoming_events
+        }
     )
 
 def all_events(request):

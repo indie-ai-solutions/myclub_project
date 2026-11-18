@@ -60,7 +60,8 @@ TEMPLATES = [
         'DIRS': [BASE_DIR / 'myclub_site/templates'],  # Add the templates directory
         'APP_DIRS': True,
         'OPTIONS': {
-            'context_processors': [
+            # 'string_if_invalid': '%s', # NEVER USE IN PRODUCTION!
+            'context_processors': [                
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
