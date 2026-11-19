@@ -19,6 +19,10 @@ from django.urls import include, path
 from django.contrib.auth import views as auth_views # Import auth_views for password reset views
 from . import contact  # Import the contact module
 
+admin.site.site_header = 'MyClub Administration'
+admin.site.site_title = 'MyClub Site Admin'
+admin.site.index_title = 'MyClub Site Admin Home'
+
 urlpatterns = [
     # Add password reset URL patterns
     path(

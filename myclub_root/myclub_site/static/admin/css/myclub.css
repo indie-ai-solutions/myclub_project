@@ -1,0 +1,30 @@
+/* Light theme */
+html[data-theme="light"],
+:root {
+    --secondary: #5b2a86;          /* header bar background */
+    --accent: #f5dd5d;             /* site-name text in the header */
+    --primary: #8e5cb8;            /* lighter brand colour */
+    --header-color: #fff;
+    --breadcrumbs-bg: #3e1c5c;
+    --breadcrumbs-fg: #e5d6f3;
+    --link-fg: #5b2a86;
+    --link-hover-color: #2d0f47;
+    --button-bg: var(--secondary);
+    --button-hover-bg: #3e1c5c;
+}
+
+/* Dark theme */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary: #3e1c5c;
+        --secondary: #5b2a86;
+        --link-fg: #c9a7e8;
+        --link-hover-color: #e5d6f3;
+    }
+}
+html[data-theme="dark"] {
+    --primary: #3e1c5c;
+    --secondary: #5b2a86;
+    --link-fg: #c9a7e8;
+    --link-hover-color: #e5d6f3;
+}
