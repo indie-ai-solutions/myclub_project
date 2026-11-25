@@ -18,10 +18,11 @@ from django.contrib import admin
 from django.urls import include, path
 from django.contrib.auth import views as auth_views # Import auth_views for password reset views
 from . import contact  # Import the contact module
+from events.admin import admin_site  # Import the custom admin site
 
-admin.site.site_header = 'MyClub Administration'
-admin.site.site_title = 'MyClub Site Admin'
-admin.site.index_title = 'MyClub Site Admin Home'
+# admin.site.site_header = 'MyClub Administration'
+# admin.site.site_title = 'MyClub Site Admin'
+# admin.site.index_title = 'MyClub Site Admin Home'
 
 urlpatterns = [
     # Add password reset URL patterns
@@ -46,6 +47,7 @@ urlpatterns = [
         name='password_reset_complete',
     ),
     path('admin/', admin.site.urls),
+    path('eventsadmin/', admin_site.urls),  # Use the custom admin site for events
     path('contact/', contact.contact, name='contact'),
     path('', include('events.urls')),
 ]

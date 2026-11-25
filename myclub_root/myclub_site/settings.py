@@ -32,7 +32,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'events.apps.EventsConfig',
-    'django.contrib.admin',
+    # 'django.contrib.admin',
+    'myclub_site.apps.MyClubAdminConfig', # Add your custom admin app here
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
