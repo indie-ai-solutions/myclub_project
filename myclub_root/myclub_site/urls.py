@@ -48,6 +48,7 @@ urlpatterns = [
     ),
     path('admin/', admin.site.urls),
     path('eventsadmin/', admin_site.urls),  # Use the custom admin site for events
-    path('contact/', contact.contact, name='contact'),
+    # path('contact/', contact.contact, name='contact'),
+    path('contact/', contact.ContactUs.as_view(), name='contact'),  # Use the ContactUs class-based view
     path('', include('events.urls')),
 ]

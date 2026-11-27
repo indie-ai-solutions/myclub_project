@@ -1,4 +1,5 @@
 from django import forms
+from django.views.generic.edit import FormView
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.core.mail import send_mail
@@ -32,3 +33,24 @@ def contact(request):
         'contact/contact.html', 
         {'form': form, 'submitted': submitted}
         )
+
+class ContactUs(FormView):
+    template_name = 'contact/contact.html'
+    form_class = ContactForm
+    success_url = '/contact?submitted=True'
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if 'submitted' in request.GET:
+            context['submitted'] = request.GET['submitted']
+        return self.render_to_response(context)
+
+    def form_valid(self, form):
+        cd = form.cleaned_data
+        send_mail(
+                cd['subject'],
+                cd['message'],
+                cd.get('email', 'noreply@example.com'),
+                ['siteowner@example.com'],               
+            )
+        return super().form_valid(form)
